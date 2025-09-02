@@ -119,7 +119,7 @@ export default function Index() {
 
   if (!isLoggedIn) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center p-4">
         <Card className="w-full max-w-md">
           <CardHeader className="text-center">
             <div className="w-20 h-20 mx-auto mb-4 bg-primary rounded-lg flex items-center justify-center">
@@ -154,8 +154,9 @@ export default function Index() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-      <nav className="bg-white shadow-sm border-b">
+    <>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+      <nav className="bg-white shadow-sm border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex items-center">
@@ -164,10 +165,11 @@ export default function Index() {
               </div>
               <span className="text-xl font-semibold text-gray-900">Техподдержка</span>
             </div>
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2 md:space-x-4">
               <Button
                 variant={currentView === 'support' ? 'default' : 'ghost'}
                 onClick={() => setCurrentView('support')}
+                className="hidden md:flex"
               >
                 <Icon name="Plus" size={16} className="mr-2" />
                 Создать обращение
@@ -175,19 +177,50 @@ export default function Index() {
               <Button
                 variant={currentView === 'tickets' ? 'default' : 'ghost'}
                 onClick={() => setCurrentView('tickets')}
+                className="hidden md:flex"
               >
                 <Icon name="List" size={16} className="mr-2" />
                 Мои обращения
               </Button>
+              
+              {/* Mobile menu buttons */}
+              <Button
+                variant={currentView === 'support' ? 'default' : 'ghost'}
+                onClick={() => setCurrentView('support')}
+                size="sm"
+                className="md:hidden"
+              >
+                <Icon name="Plus" size={16} />
+              </Button>
+              <Button
+                variant={currentView === 'tickets' ? 'default' : 'ghost'}
+                onClick={() => setCurrentView('tickets')}
+                size="sm"
+                className="md:hidden"
+              >
+                <Icon name="List" size={16} />
+              </Button>
+              
+              {/* Telegram Bot Button */}
+              <Button
+                variant="outline"
+                onClick={() => window.open('https://t.me/your_support_bot', '_blank')}
+                className="bg-white hover:bg-blue-50 border-blue-200 text-blue-600"
+              >
+                <Icon name="MessageCircle" size={16} className="mr-1 md:mr-2" />
+                <span className="hidden sm:inline">Бот</span>
+              </Button>
+              
               <Button
                 variant="ghost"
                 onClick={() => {
                   setIsLoggedIn(false);
                   setCurrentView('login');
                 }}
+                size="sm"
               >
-                <Icon name="LogOut" size={16} className="mr-2" />
-                Выйти
+                <Icon name="LogOut" size={16} className="md:mr-2" />
+                <span className="hidden md:inline">Выйти</span>
               </Button>
             </div>
           </div>
@@ -299,10 +332,10 @@ export default function Index() {
               <div className="space-y-4">
                 {tickets.map((ticket) => (
                   <div key={ticket.id} className="border rounded-lg p-4 hover:bg-gray-50 transition-colors">
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                       <div className="flex-1">
-                        <div className="flex items-center space-x-3 mb-2">
-                          <h3 className="font-semibold text-lg">{ticket.title}</h3>
+                        <div className="flex items-start md:items-center space-x-3 mb-2">
+                          <h3 className="font-semibold text-lg flex-1">{ticket.title}</h3>
                           <Badge className={getStatusColor(ticket.status)}>
                             {getStatusText(ticket.status)}
                           </Badge>
@@ -321,7 +354,7 @@ export default function Index() {
                       </div>
                       <Dialog>
                         <DialogTrigger asChild>
-                          <Button variant="outline" size="sm">
+                          <Button variant="outline" size="sm" className="w-full md:w-auto">
                             <Icon name="Eye" size={16} className="mr-2" />
                             Подробнее
                           </Button>
@@ -386,5 +419,13 @@ export default function Index() {
         )}
       </main>
     </div>
+    
+    {/* Bitrix24 Chat Button Placeholder */}
+    <div className="fixed bottom-6 right-6">
+      <div className="w-14 h-14 bg-primary rounded-full shadow-lg flex items-center justify-center cursor-pointer hover:scale-110 transition-transform">
+        <Icon name="MessageCircle" size={24} className="text-white" />
+      </div>
+    </div>
+    </>
   );
 }
